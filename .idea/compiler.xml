@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Milestone2" />
+        <module name="iamneo-production_d396459e-8a7e-4d75-9fde-36a40a621794-7614eb84-630e-4bb2-8a3a-66f1c96ab91c" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
