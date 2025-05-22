@@ -1,5 +1,5 @@
 name: Build
-'on':
+on:
   push:
     branches:
       - '*'
@@ -24,25 +24,18 @@ jobs:
         run: mv .github/workflows/pom.xml ./pom.xml
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: >-
-            d396459e-8a7e-4d75-9fde-36a40a621794-7614eb84-630e-4bb2-8a3a-66f1c96ab91c
-          SONAR_TOKEN: 811c9a490983734401ba4e491eaefc8bfa7281de
-        run: >-
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Dsonar.projectKey=iamneo-production_d396459e-8a7e-4d75-9fde-36a40a621794-7614eb84-630e-4bb2-8a3a-66f1c96ab91c
-          -Dsonar.login=811c9a490983734401ba4e491eaefc8bfa7281de
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - name: Trigger API
         if: always()
         env:
-          API_URL: '${{ secrets.API_URL }}'
-          API_SECRET: '${{ secrets.API_SECRET }}'
-        run: >
+          API_URL: ${{ secrets.API_URL }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+        run: |
           REPO_NAME=$(echo "${GITHUB_REPOSITORY}" | cut -d '/' -f 2)
-
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
-
-          API_PAYLOAD="{ \"repo_id\": \"$REPO_NAME\", \"branch_name\":
-          \"$BRANCH_NAME\", \"api_secret\": \"$API_SECRET\" }"
-
-          curl -X POST -H "Content-Type: application/json" -d "$API_PAYLOAD"
-          $API_URL
+          API_PAYLOAD="{ \"repo_id\": \"$REPO_NAME\", \"branch_name\": \"$BRANCH_NAME\", \"api_secret\": \"$API_SECRET\" }"
+          curl -X POST -H "Content-Type: application/json" -d "$API_PAYLOAD" $API_URL
